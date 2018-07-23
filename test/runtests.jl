@@ -1,4 +1,10 @@
-using BasisFunctions, CompactTranslatesDict, StaticArrays, Base.Test
+using BasisFunctions, CompactTranslatesDict, StaticArrays
+
+if VERSION < v"0.7-"
+    using Base.Test
+else
+    using Test, LinearAlgebra
+end
 
 using CompactApproximation: coefficient_index_range_of_overlapping_elements, interval_index, grid_index_mask_in_element_support, grid_index_range_in_element_support, coefficient_index_mask_of_overlapping_elements, coefficient_indices_of_overlapping_elements
 
@@ -13,13 +19,23 @@ function test_coefficient_index_range_of_overlapping_elements()
     B = BSplineTranslatesBasis(1<<L,2)
     for x in [0, 0.01, 0.99]
         g = ScatteredGrid([x])
-        @test sort(find(evaluation_matrix(B, g).!=0)) == sort(collect(coefficient_index_range_of_overlapping_elements(B, g[1])))
+        if (VERSION < v"0.7-")
+            @test sort(find(evaluation_matrix(B, g).!=0)) == sort(collect(coefficient_index_range_of_overlapping_elements(B, g[1])))
+        else
+            t = evaluation_matrix(B, g).!=0
+            @test sort(LinearIndices(t)[findall(t)]) == sort(collect(coefficient_index_range_of_overlapping_elements(B, g[1])))
+        end
     end
     B = B⊗B
     for x in [0, 0.01, 0.99]
         g = ScatteredGrid([x])
         g = g×g
-        @test sort(find(evaluation_matrix(B, g).!=0)) == sort([sub2ind(size(B), i.I...) for i in coefficient_index_range_of_overlapping_elements(B, g[1])])
+        if (VERSION < v"0.7-")
+            @test sort(find(evaluation_matrix(B, g).!=0)) == sort([sub2ind(size(B), i.I...) for i in coefficient_index_range_of_overlapping_elements(B, g[1])])
+        else
+            t = evaluation_matrix(B, g).!=0
+            @test sort(LinearIndices(t)[findall(t)]) == sort([LinearIndices(size(B))[i.I...] for i in coefficient_index_range_of_overlapping_elements(B, g[1])])
+        end
     end
 end
 
@@ -49,24 +65,35 @@ function test_spline_approximation(T)
     # Select the points that are in the support of the function
     B = BSplineTranslatesBasis(10,3,T)⊗BSplineTranslatesBasis(15,5,T)
     g = BasisFunctions.grid(B)
-    set = map(x->CartesianIndex(ind2sub(size(B), x)), [1,length(B)-1])
+    set = (VERSION < v"0.7-") ?
+        map(x->CartesianIndex(ind2sub(size(B), x)...), [1,length(B)-1]) :
+        map(x->CartesianIndices(size(B))[x], [1,length(B)-1])
     indices = grid_index_range_in_element_support.(B,g,set)
 
-    @test reduce(&,true,[B[set[j]](x...) for j in 1:length(set) for x in [g[i] for i in indices[j]]] .> 0)
+    @test (VERSION < v"0.7-") ?
+        reduce(&,true,[B[set[j]](x...) for j in 1:length(set) for x in [g[i] for i in indices[j]]] .> 0) :
+        reduce(&,[B[set[j]](x...) for j in 1:length(set) for x in [g[i] for i in indices[j]]] .> 0; init=true)
 
     # Select the points that are in the support of the function
     B = BSplineTranslatesBasis(10,3,T)⊗BSplineTranslatesBasis(15,5,T)⊗BSplineTranslatesBasis(5,1,T)
     g = BasisFunctions.grid(B)
-    set = map(x->CartesianIndex(ind2sub(size(B), x)), [1,length(B)-1])
+    set = (VERSION < v"0.7-") ?
+        map(x->CartesianIndex(ind2sub(size(B), x)), [1,length(B)-1]) :
+        map(x->CartesianIndices(size(B))[x], [1,length(B)-1])
+
     indices = grid_index_range_in_element_support.(B,g,set)
-    @test reduce(&,true,[B[set[j]](x...) for j in 1:length(set) for x in [g[i] for i in indices[j]]] .> 0)
+    @test (VERSION < v"0.7-") ?
+        reduce(&,true,[B[set[j]](x...) for j in 1:length(set) for x in [g[i] for i in indices[j]]] .> 0) :
+        reduce(&,[B[set[j]](x...) for j in 1:length(set) for x in [g[i] for i in indices[j]]] .> 0; init=true)
 end
 
 function test_index_masks()
     B = BSplineTranslatesBasis(10,3)⊗BSplineTranslatesBasis(15,5)
     g = grid(B)
     indices = [rand(1:length(B)) for i in 1:10]
-    cindices = map(x->CartesianIndex(ind2sub(size(B), x)), indices)
+    cindices = (VERSION < v"0.7-") ?
+        map(x->CartesianIndex(ind2sub(size(B), x)), indices) :
+        map(x->CartesianIndices(size(B))[x], indices)
     mask = grid_index_mask_in_element_support(B, g, cindices)
 
     for i in eachindex(g)
@@ -80,7 +107,7 @@ function test_index_masks()
         @test evaluate_not_zero == mask[i]
     end
 
-    m = BitArray(size(B))
+    m = (VERSION < v"0.7-") ? BitArray(size(B)) : BitArray(undef, size(B))
     fill!(m, 0)
     for i in cindices
         m[i] = 1
@@ -121,9 +148,9 @@ function test_index_masks()
         end
     end
     indices = coefficient_indices_of_overlapping_elements(B, g)
-    m = BitArray(size(B))
+    m = (VERSION <v"0.7-") ? BitArray(size(B)) : BitArray(undef, size(B))
     fill!(m, 0)
-    m[indices] = 1
+    m[indices] .= 1
     @test m==indexmask
 
 end

@@ -7,7 +7,11 @@ function _grid_index_limits_in_element_support(B::Dictionary, g::AbstractEquispa
         stop = floor(Int,(supremum(s)-x0)/dx)
         !_element_spans_one(B) && ((infimum(s)-x0)/dx ≈ start) && (start += 1)
         ((supremum(s)-x0)/dx ≈ stop) && (stop -= 1)
-        return (start+1, stop+1)
+        if VERSION < v"0.7-"
+            return (start+1, stop+1)
+        else
+            return (start+1):(stop+1)
+        end
     else
         interval = elements(s)[1]
         # start = 0
@@ -18,7 +22,11 @@ function _grid_index_limits_in_element_support(B::Dictionary, g::AbstractEquispa
         start = ceil(Int,(infimum(interval)-x0)/dx)
         # stop = length(g)-1
         ((infimum(interval)-x0)/dx ≈ start) && (start += 1)
-        return (start+1-length(g), stop+1)
+        if VERSION < v"0.7-"
+            return (start+1-length(g), stop+1)
+        else
+            return (start+1-length(g)):(stop+1)
+        end
     end
 end
 
@@ -32,22 +40,31 @@ grid_index_limits_in_element_support(B::Dictionary1d, g::AbstractGrid1d, i::Int)
 grid_index_limits_in_element_support(B::TensorProductDict, g::ProductGrid, cartindex::CartesianIndex{N}) where {N} =
     [_grid_index_limits_in_element_support(s,element(g,i),cartindex[i]) for (i,s) in enumerate(elements(B))]
 
-"""
-Grid cartesian index limits of `g` of points in the support of `B[index]`.
-"""
-function grid_cartesian_index_limits_in_element_support(B::Dictionary, g::AbstractGrid, index)
-    t = grid_index_limits_in_element_support(B, g, index)
-    CartesianIndex([i[1]for i in t]...), CartesianIndex([i[2]for i in t]...)
+if VERSION < v"0.7-"
+    """
+    Grid cartesian index limits of `g` of points in the support of `B[index]`.
+    """
+    function grid_cartesian_index_limits_in_element_support(B::Dictionary, g::AbstractGrid, index)
+        t = grid_index_limits_in_element_support(B, g, index)
+        CartesianIndex([i[1] for i in t]...), CartesianIndex([i[2] for i in t]...)
+    end
+else
+    """
+    Grid cartesian index limits of `g` of points in the support of `B[index]`.
+    """
+    grid_cartesian_index_limits_in_element_support(B::Dictionary, g::AbstractGrid, index) =
+        grid_index_limits_in_element_support(B, g, index)
 end
 
 """
 Grid indices of `g` of points in the support of `B[index]`.
 """
 grid_index_range_in_element_support(B::Dictionary, g::AbstractGrid, index) =
-    ModCartesianRange(size(g), grid_cartesian_index_limits_in_element_support(B, g, index)...)
+    ModCartesianIndices(size(g), grid_cartesian_index_limits_in_element_support(B, g, index)...)
 
 grid_index_mask_in_element_support(B::Dictionary, g::AbstractGrid, indices) =
-    grid_index_mask_in_element_support!(BitArray(size(g)), B, g, indices)
+    (VERSION < v"0.7-") ? grid_index_mask_in_element_support!(BitArray(size(g)), B, g, indices) :
+        grid_index_mask_in_element_support!(BitArray(undef, size(g)), B, g, indices)
 
 function grid_index_mask_in_element_support!(mask::BitArray, B::Dictionary, g::AbstractGrid, indices)
     fill!(mask, 0)

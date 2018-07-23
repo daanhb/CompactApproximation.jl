@@ -17,7 +17,7 @@ uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 deps = ["AbstractTrees", "DSP", "Domains", "FFTW", "FastGaussQuadrature", "LinearAlgebra", "Plots", "QuadGK", "Random", "RecipesBase", "SparseArrays", "SpecialFunctions", "StaticArrays", "Test"]
 git-tree-sha1 = "51a73a7d4ece341580d34ea8fd78ddb31e90b6c0"
 repo-rev = "julia-0.7"
-repo-url = "https://github.com/daanhb/BasisFunctions.jl.git"
+repo-url = "https://github.com/daanhb/BasisFunctions.jl"
 uuid = "8ac202e8-8a12-11e8-0422-2b902fe89c2d"
 version = "0.1.0"
 
@@ -32,6 +32,14 @@ deps = ["Compat", "Pkg", "SHA"]
 git-tree-sha1 = "94dac52c662ca793008fb689e3daf626b6139943"
 uuid = "b99e7846-7c00-51b0-8f62-c81ae34c0232"
 version = "0.3.3"
+
+[[CardinalBSplines]]
+deps = ["QuadGK"]
+git-tree-sha1 = "57eda17db77762b06c878294634f2926ab6d2c68"
+repo-rev = "master"
+repo-url = "https://github.com/vincentcp/CardinalBSplines"
+uuid = "87d49508-7ad8-11e8-0eda-cb6920b58870"
+version = "0.0.1"
 
 [[ColorTypes]]
 deps = ["FixedPointNumbers", "Random", "Test"]
@@ -50,6 +58,14 @@ deps = ["Compat", "IterTools", "Polynomials"]
 git-tree-sha1 = "60c82fafd63df8a8a2c08b29905c64a75fe8bacd"
 uuid = "861a8166-3701-5b0c-9a16-15d98fcdc6aa"
 version = "0.6.0"
+
+[[CompactTranslatesDict]]
+deps = ["BasisFunctions", "CardinalBSplines", "Domains", "LinearAlgebra", "StaticArrays"]
+git-tree-sha1 = "8ffea3e927a1c544d2053e8e2e7c1b2101e44939"
+repo-rev = "master"
+repo-url = "https://github.com/vincentcp/CompactTranslatesDict.jl"
+uuid = "455b6770-8cd4-11e8-0457-dd6f5558b097"
+version = "0.0.1"
 
 [[Compat]]
 deps = ["Base64", "Dates", "DelimitedFiles", "Distributed", "InteractiveUtils", "LibGit2", "Libdl", "LinearAlgebra", "Markdown", "Mmap", "Pkg", "Printf", "REPL", "Random", "Serialization", "SharedArrays", "Sockets", "SparseArrays", "Statistics", "Test", "UUIDs", "Unicode"]
@@ -120,7 +136,7 @@ version = "0.5.1"
 deps = ["BasisFunctions", "Combinatorics", "Domains", "GR", "LinearAlgebra", "Plots", "Printf", "QuadGK", "RecipesBase", "StaticArrays"]
 git-tree-sha1 = "b5db3c62586b219f4741cb22028226ae963828ef"
 repo-rev = "julia-0.7"
-repo-url = "https://github.com/daanhb/FrameFun.jl.git"
+repo-url = "https://github.com/daanhb/FrameFun.jl"
 uuid = "778aa48c-bd46-5276-944b-a086f2e2e18d"
 version = "0.1.0"
 

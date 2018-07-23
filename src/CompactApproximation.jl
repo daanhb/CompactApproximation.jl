@@ -4,10 +4,16 @@ using Domains, BasisFunctions, CompactTranslatesDict, FrameFun, StaticArrays
 
 using FrameFun: FE_Solver
 
+if VERSION < v"0.7-"
+    CartesianIndices = CartesianRange
+    Nothing = Void
+else
+    nothing
+end
 include("dict_specific/dict_specific.jl")
 
 
-include("ModCartesianRange.jl")
+include("ModCartesianIndices.jl")
 include("grid_indices.jl")
 include("coefficient_indices.jl")
 

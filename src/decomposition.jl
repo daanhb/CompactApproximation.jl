@@ -21,7 +21,6 @@ function assign_sequence_nro(bins)
         b .= bins[i]
         a .= iseven.(b)
         seq[i] = (1<<M)-_int(a)
-        # seq[i] = M+1-sum(a)
     end
     seq
 end
@@ -38,7 +37,7 @@ end
 """
 Clasifies the coefficient indices activated in `coefficient_mask` in `depth` dimensions.
 """
-function classified_indices(coefficient_mask::AbstractArray{Bool}, primal::TensorProductDict, gamma::ProductGrid, depth::Int; no_blocks::Union{Int,Void}=nothing)
+function classified_indices(coefficient_mask::AbstractArray{Bool}, primal::TensorProductDict, gamma::ProductGrid, depth::Int; no_blocks::Union{Int,Nothing}=nothing)
     sprimal = size(primal)
     # The cartesian indices of the activated coefficients
     cart_indices = [CartesianIndex(ind2sub(sprimal, i) ) for i in find(coefficient_mask)]
