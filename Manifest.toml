@@ -15,7 +15,7 @@ uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 
 [[BasisFunctions]]
 deps = ["AbstractTrees", "DSP", "Domains", "FFTW", "FastGaussQuadrature", "FastTransforms", "GenericLinearAlgebra", "LinearAlgebra", "Plots", "QuadGK", "Random", "RecipesBase", "SparseArrays", "SpecialFunctions", "StaticArrays", "Test"]
-git-tree-sha1 = "d755f0b75b4b6919541a03a1626649ca74628446"
+git-tree-sha1 = "82e5330718f9da6ee2db7bb9ed3da2962a65b229"
 repo-rev = "julia-0.7"
 repo-url = "https://github.com/daanhb/BasisFunctions.jl.git"
 uuid = "8ac202e8-8a12-11e8-0422-2b902fe89c2d"
@@ -61,7 +61,7 @@ version = "0.6.0"
 
 [[CompactTranslatesDict]]
 deps = ["BasisFunctions", "CardinalBSplines", "Domains", "FastTransforms", "GenericLinearAlgebra", "LinearAlgebra", "StaticArrays"]
-git-tree-sha1 = "035cab5fb1b0f6238ee30b3d0d609333282c9adf"
+git-tree-sha1 = "e4e730c711be048e24183564d290f02d21facbd1"
 repo-rev = "master"
 repo-url = "https://github.com/vincentcp/CompactTranslatesDict.jl.git"
 uuid = "455b6770-8cd4-11e8-0457-dd6f5558b097"
@@ -128,7 +128,7 @@ version = "0.3.1"
 
 [[FastTransforms]]
 deps = ["AbstractFFTs", "Compat", "DSP", "FFTW", "HierarchicalMatrices", "LinearAlgebra", "LowRankApprox", "ProgressMeter", "SpecialFunctions", "ToeplitzMatrices"]
-git-tree-sha1 = "272ae18900fb0f557293bf194e727c21fcb49dd5"
+git-tree-sha1 = "afc2bad8c9e5d5243e0f0e9678f168f8179c0c1f"
 repo-rev = "master"
 repo-url = "https://github.com/MikaelSlevinsky/FastTransforms.jl"
 uuid = "057dd010-8810-581a-b7be-e3fc3b93f78c"
@@ -148,7 +148,7 @@ version = "0.5.1"
 
 [[FrameFun]]
 deps = ["BasisFunctions", "Combinatorics", "Domains", "FastTransforms", "GR", "GenericLinearAlgebra", "LinearAlgebra", "Plots", "Printf", "QuadGK", "RecipesBase", "StaticArrays"]
-git-tree-sha1 = "4c36b81638d6e516564254fd29fac16b9abce06b"
+git-tree-sha1 = "2989b2b4930e4b27cf47eb3a2cc4272f0f6564a3"
 repo-rev = "julia-0.7"
 repo-url = "https://github.com/daanhb/FrameFun.jl.git"
 uuid = "778aa48c-bd46-5276-944b-a086f2e2e18d"
