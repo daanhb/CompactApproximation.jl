@@ -14,6 +14,7 @@ if VERSION < v"0.7-"
     mul! = A_mul_B!
 else
     using LinearAlgebra
+    using LinearAlgebra: LAPACK
 end
 include("dict_specific/dict_specific.jl")
 include("subgrid.jl")

@@ -1,4 +1,4 @@
-using BasisFunctions, CompactTranslatesDict, StaticArrays
+using BasisFunctions, CompactTranslatesDict, StaticArrays, CompactApproximation
 
 if VERSION < v"0.7-"
     using Base.Test

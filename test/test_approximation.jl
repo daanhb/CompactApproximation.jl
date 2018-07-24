@@ -6,7 +6,7 @@ else
     using Test
 end
 
-using CompactApproximation: boundary_support_grid, restriction_operator, azselection_restriction_operators, _spline_util_restriction_operators, relative_indices
+using CompactApproximation: boundary_support_grid, restriction_operator, azselection_restriction_operators, relative_indices
 using FrameFun: subgrid
 using BasisFunctions: oversampled_grid, grid
 # using WaveletsCopy: cdf24, db3
