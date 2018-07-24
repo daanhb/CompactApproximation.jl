@@ -1,9 +1,5 @@
 SYSTEM_SIZE=8000
 
-"""
-Number of basis elements overlapping with a point.
-"""
-no_overlapping_elements(dict::Dictionary) = ceil(Int,BasisFunctions.support_length_of_compact_function(dict)*length(dict))
 
 """
 Assign a sequence number to each element in bin.
@@ -52,7 +48,7 @@ function classified_indices(coefficient_mask::AbstractArray{Bool}, primal::Tenso
             # (it scales, but other methods may be better)
             g1d = element(gamma,i)
             primal1d = element(primal, i)
-            dual1d = BasisFunctions.wavelet_dual(primal1d)
+            dual1d = wavelet_dual(primal1d)
             OS = cld(length(g1d),length(primal1d))
             no_samples_in_1d = cld(SYSTEM_SIZE,OS*no_overlapping_elements(dual1d))
             no_coeffs_in_1d_other = ceil(Int, fld(no_samples_in_1d, OS)^(1/(max(1,depth-1))))

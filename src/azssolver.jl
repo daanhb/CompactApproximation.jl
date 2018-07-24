@@ -77,15 +77,15 @@ function _apply!(s::AZSSolver{ELT,Val{false}}, coef_dest, coef_src, A, Zt, b, bl
     end
 end
 
-function AZSSolver(fplatform::BasisFunctions.Platform, i; options...)
-    a = BasisFunctions.A(fplatform, i; options...)
-    zt = BasisFunctions.Zt(fplatform, i; options...)
+function AZSSolver(fplatform::Platform, i; options...)
+    a = A(fplatform, i; options...)
+    zt = Zt(fplatform, i; options...)
     platform = fplatform.super_platform
-    s = BasisFunctions.sampler(fplatform, i)
+    s = sampler(fplatform, i)
     omega = grid(s)
     gamma = supergrid(omega)
-    domain = FrameFun.domain(src(a))
-    frame_restriction, grid_restriction = azselection_restriction_operators(primal(platform, i), gamma, omega, domain)
-    # frame_restriction, grid_restriction = FrameFun.spline_util_restriction_operators(platform, i)
+    d = domain(src(a))
+    frame_restriction, grid_restriction = azselection_restriction_operators(primal(platform, i), gamma, omega, d)
+    
     AZSSolver(a, zt, frame_restriction', grid_restriction; options...)
 end
